@@ -11,12 +11,9 @@ app.use("/static", express.static("public"));
 
 app.set("view engine", "ejs");
 
-app.get('/',(req, res) => {
-    res.render('todo.ejs');
-    });
-
 app.use(express.urlencoded({ extended: true }));
 
+//Create
 app.post('/',async (req, res) => {
     const todoTask = new TodoTask({
     content: req.body.content
@@ -28,6 +25,42 @@ app.post('/',async (req, res) => {
     res.redirect("/");
     }
 });
+
+//Read
+app.get('/', async(req, res) => {
+  try{
+    tasks = await TodoTask.find() 
+    res.render("todo.ejs", { todoTasks: tasks })
+  }
+  catch(err){
+    console.log("can't retrieve values")
+  }
+});
+
+//Update
+app
+.route("/edit/:id")
+.get( async (req, res) => {
+  const id = req.params.id;
+  try{
+    tasks = await TodoTask.find()
+    res.render("todoEdit.ejs", { todoTasks: tasks, idTask: id });
+  }
+  catch(err){
+    console.log("can't retrieve task")
+  }
+})
+.post(async (req, res) => {
+  const id = req.params.id;
+  try{
+    await TodoTask.findByIdAndUpdate(id, { content: req.body.content })
+    res.redirect("/")
+  }
+  catch(err){
+      console.log("can't update task")
+  }
+});
+
 
 //connection to db
 
