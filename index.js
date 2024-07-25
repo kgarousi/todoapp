@@ -57,7 +57,19 @@ app
     res.redirect("/")
   }
   catch(err){
-      console.log("can't update task")
+      console.log("Can't update task")
+  }
+});
+
+//Delete
+app.route("/remove/:id").get(async(req, res) => {
+  const id = req.params.id;
+  try{
+    await TodoTask.findByIdAndDelete(id)
+    res.redirect("/");
+  }
+  catch(err){
+    console.log("Can't delete entry")
   }
 });
 
