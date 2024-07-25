@@ -33,7 +33,8 @@ app.get('/', async(req, res) => {
     res.render("todo.ejs", { todoTasks: tasks })
   }
   catch(err){
-    console.log("can't retrieve values")
+    res.status(500);
+    res.send('Internal server error')
   }
 });
 
@@ -47,7 +48,8 @@ app
     res.render("todoEdit.ejs", { todoTasks: tasks, idTask: id });
   }
   catch(err){
-    console.log("can't retrieve task")
+    res.status(500);
+    res.send('Internal server error')
   }
 })
 .post(async (req, res) => {
@@ -57,7 +59,8 @@ app
     res.redirect("/")
   }
   catch(err){
-      console.log("Can't update task")
+    res.status(500);
+    res.send('Internal server error')
   }
 });
 
@@ -69,7 +72,8 @@ app.route("/remove/:id").get(async(req, res) => {
     res.redirect("/");
   }
   catch(err){
-    console.log("Can't delete entry")
+    res.status(500);
+    res.send('Internal server error')
   }
 });
 
